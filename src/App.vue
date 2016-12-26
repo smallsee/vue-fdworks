@@ -1,57 +1,39 @@
 <template>
-  <div id="app">
-    <v-header :seller="seller"></v-header>
-    <div class="tab border-1px">
-      <div class="tab-item">
-          <router-link to="/home">主页</router-link>
-      </div>
-      <div class="tab-item">
-          <router-link to="/book">本子</router-link>
-      </div>
-      <div class="tab-item">
-          <router-link to="/video">视频</router-link>
-      </div>
+    <div id="app">
+        <v-header></v-header>
+
+        <div class="tab">
+            <div class="tab-item">
+                <span class="el-icon-delete home-icon"></span>
+                <router-link to="/home">主页</router-link>
+            </div>
+            <div class="tab-item">
+                <span class="num">5z</span>
+                <router-link to="/book">本子</router-link>
+            </div>
+            <div class="tab-item">
+                <span class="num">55</span>
+                <router-link to="/video">视频</router-link>
+            </div>
+        </div>
+
+
+
+        <div class="main-wrapper">
+            <router-view></router-view>
+        </div>
+
+
     </div>
-
-    <div>
-        <router-view :seller="seller"></router-view>
-    </div>
-
-
-
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
-    import {urlParse} from 'common/js/util';
     import header from 'components/header/header.vue';
 
-    const ERR_OK = 0;
-
     export default{
-      data() {
-        return {
-           seller: {
-             id: (() => {
-               let queryParam = urlParse();
-               console.log(queryParam);
-               return queryParam.id;
-             })()
-           }
-        };
-      },
-      created() {
-        this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
-          response = response.body;
-            if (response.errno === ERR_OK) {
-              this.seller = Object.assign({}, this.seller, response.data);
-              console.log(this.seller.id);
-            }
-        });
-      },
-      components: {
-        'v-header': header
-      }
+        components: {
+            'v-header': header
+        }
     };
 </script>
 
@@ -59,24 +41,47 @@
     @import "./common/scss/index.Scss";
 
     .tab{
-        display: flex;
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        @include border-bottom-1px(rgba(7,17,27,0.1));
+        width: 1160px;
+        height: 50px;
+        margin: 0 auto;
         .tab-item{
-            flex:1;
+            display: inline-block;
+            padding-left: 0;
+            padding-right: 20px;
+            padding-top: 10px;
             text-align: center;
-            &>a{
-                display: block;
-                font-size: 14px;
-                color: rgb(77,85,93);
-                &.router-link-active{
-                    color: red;
+            &:hover{
+                a{
+                    color: #1D8CE0;
                 }
+            }
+            &:last-child{
+                padding-right: 0;
+            }
+            a{
+                line-height: 25px;
+                font-size: 14px;
+                color: #222;
+            }
+            .num{
+                display: block;
+                font-size: 12px;
+                line-height: 18px;
+                background: rgb(255, 175, 201);
+                border-radius: 4px;
+                color: #fff;
+            }
+            .home-icon{
+                display: block;
+                line-height: 18px;
+                color: rgb(255, 175, 201);
+
             }
         }
     }
-
-
+    .main-wrapper{
+        margin: 0 auto;
+        width: 1160px;
+        padding: 5px 0;
+    }
 </style>
